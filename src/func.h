@@ -13,7 +13,7 @@
 #define H_RES 10
 #define HEADER_DEFAULT "RIFF\xff\xff\xff\xffWAVEfmt\x20\x10\x00\x00\x00\x01\x00\x01\x00\x44\xac\x00\x00\x44\xac\x00\x00\x01\x00\x08\x00\x64\x61ta\xff\xff\xff\xff"
 #define MAX_BUF 1000000
-#define FORMAT_STR_FILENAME "bytebeat_0f_%luf.wav"
+#define FORMAT_STR_FILENAME "../bytebeat_0f_%luf.wav"
 
 /*structs*/
 typedef struct ByteData{

@@ -36,6 +36,6 @@ void get_config_str_(FILE* config, char* f_str, uint32_t* res){
         char str[96];
         fread(&*str, 1, 96, config);
 	strtok(str, "\n");
-	snprintf(f_str, 28, FORMAT_STR_FILENAME, atol(strtok(NULL, "\n")));
+	snprintf(f_str, 31, FORMAT_STR_FILENAME, atol(strtok(NULL, "\n")));
         *res = atol(strtok(NULL, "\n"));
 }

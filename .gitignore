@@ -56,8 +56,5 @@ dkms.conf
 
 # other
 *.wav
-in.txt
-config.txt
-mismatches.txt
-stats.txt
+*.txt
 *.Identifier

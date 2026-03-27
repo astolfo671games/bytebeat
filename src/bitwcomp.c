@@ -1,10 +1,10 @@
 #include "func.h"
 
 int main(){
-FILE* header = fopen("header.wav", "r+b");
-FILE* config = fopen("config.txt", "r+t");
-FILE* mismatches = fopen("mismatches.txt", "w+t");
-FILE* stats = fopen("stats.txt", "w+t");
+FILE* header = fopen("../header.wav", "r+b");
+FILE* config = fopen("../config.txt", "r+t");
+FILE* mismatches = fopen("../mismatches.txt", "w+t");
+FILE* stats = fopen("../stats.txt", "w+t");
 
 char f_str[28];
 uint32_t res;

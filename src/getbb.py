@@ -6,7 +6,7 @@ CODE1: str = "uint8_t u =\n"
 from typing import TextIO
 
 def getbb():
-    bytebeat: str = open("in.txt").read()
+    bytebeat: str = open("../in.txt").read()
     f: TextIO = open("thing.c")
     lines: list[str] = f.readlines()
     while lines[-1] != CODE1:
