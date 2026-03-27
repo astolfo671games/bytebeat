@@ -17,6 +17,6 @@ for(uint64_t t = 0; t < length; t++){
 /*write ur own bytebeat*/
 uint8_t u =
 
-	;fwrite(&u, 1, 1, header);}
+;fwrite(&u, 1, 1, header);}
 puts("Bytebeat compiled successfully!");
 return 0;}
