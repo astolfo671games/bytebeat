@@ -9,7 +9,7 @@ FILE* stats = fopen("../stats.txt", "w+t");
 char f_str[28];
 uint32_t res;
 
-get_config_str_(config, f_str, &res);
+if(!get_config_str_(config, f_str, &res)) return 1;
 FILE* header2 = fopen(f_str, "r+b");
 
 uint32_t length = get_length(header2);
