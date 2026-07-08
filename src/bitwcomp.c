@@ -31,7 +31,7 @@ for(uint32_t t = 0; t < length; t++){
 }
 
 if(b[1].b == 0){
-	puts("Bytebeat verified succesfully!");
+	puts("Bytebeat verified successfully!");
 }else{
 	printf("Bytebeat is not C-compatible "
 	       "(first mismatch at %u, %02hhx instead of %02hhx)",
