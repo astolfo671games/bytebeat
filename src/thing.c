@@ -13,7 +13,7 @@ fseek(header, 24, SEEK_SET);
 fwrite(&samplerate, sizeof(int32_t), 2, header);
 fseek(header, 44, SEEK_SET);
 
-for(uint64_t t = 0; t < length; t++){
+for(int64_t t = 0; t < length; t++){
 /*write ur own bytebeat*/
 uint8_t u =
 t
