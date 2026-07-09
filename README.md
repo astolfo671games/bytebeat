@@ -8,7 +8,7 @@ or
 git clone git@github.com:astolfo671games/bytebeat.git && cd bytebeat
 
 2. Run init.sh:
-./init.sh <samplerate> <num_frames>
+./init.sh {samplerate} {num_frames}
 samplerate - samplerate of your bytebeat
 num_frames - length of your bytebeat (in frames)
 
