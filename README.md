@@ -5,7 +5,7 @@ How to use:
 1. Clone the repository into your folder:
 git clone https://github.com/astolfo671games/bytebeat.git && cd bytebeat
 or
-git@github.com:astolfo671games/bytebeat.git && cd bytebeat
+ git@github.com:astolfo671games/bytebeat.git && cd bytebeat
 
 2. Run init.sh:
 ./init.sh <samplerate> <num_frames>
