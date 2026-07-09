@@ -12,8 +12,12 @@
 #define V v[3]
 #define I i-1
 #define H_RES 10
+#define SR_OFFSET 24
+#define HEADER_LEN 44
 #define HEADER_DEFAULT "RIFF\xff\xff\xff\xffWAVEfmt\x20\x10\x00\x00\x00\x01\x00\x01\x00\x44\xac\x00\x00\x44\xac\x00\x00\x01\x00\x08\x00\x64\x61ta\xff\xff\xff\xff"
 #define CONFIG_BUF 256
+#define NUM_NEWLINES 3
+#define FN_MAXLEN 64
 #define MAX_BUF 1000000
 #define FORMAT_STR_FILENAME "../bytebeat_0f_%luf.wav"
 

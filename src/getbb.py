@@ -1,19 +1,24 @@
 #!/bin/python3
 
-CODESTR: str = ";fwrite(&u, 1, 1, header);}\nputs(\"Bytebeat compiled successfully!\");\nreturn 0;}"
 CODE1: str = "uint8_t u =\n"
 
 from typing import TextIO
 
+# import bytebeat code into thing.c
 def getbb():
     bytebeat: str = open("../in.txt").read()
-    f: TextIO = open("thing.c")
-    lines: list[str] = f.readlines()
+    f_r: TextIO = open("thing.c", "rt")
+    lines: list[str] = f_r.readlines()
+    final_lines: list[str] = []
+
     while lines[-1] != CODE1:
-        lines.pop()
+        final_lines.append(lines.pop())
     lines.append(bytebeat)
+    final_lines = "".join(list(reversed(final_lines[:-1])))
+
     f_w: TextIO = open("thing.c", "w+t")
-    f_w.write(f"{"".join(lines)}\n{CODESTR}")
+    thing_c: str = "".join(lines)
+    f_w.write(f"{thing_c}\n{final_lines}")
 
 if __name__ == "__main__":
     getbb()
