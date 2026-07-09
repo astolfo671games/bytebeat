@@ -7,8 +7,8 @@ cd src
 ./getbb.py
 
 # complile code
-gcc -std=c2x -o t thing.c func.c func.h 2> ../errordata.txt
-gcc -std=c2x -o b bitwcomp.c func.c func.h
+gcc -std=c2x -o t thing.c func.c func.h -O2 2> ../errordata.txt
+gcc -std=c2x -o b bitwcomp.c func.c func.h -O2
 
 # run code
 if [`cat ../errordata.txt` = ""]
