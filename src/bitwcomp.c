@@ -19,12 +19,12 @@ fseek(header, HEADER_LEN, SEEK_SET);
 fseek(header2, HEADER_LEN, SEEK_SET);
 
 ByteData b[MAX_BUF];
-uint32_t i = 0;
+uint32_t i = 0, r;
 
 for(uint32_t t = 0; t < length; t++){
 	uint8_t u, v[sizeof(uint32_t)];
-	fread(&u, 1, sizeof(uint8_t), header);
-	fread(v, 1, sizeof(uint32_t), header2);
+	r = fread(&u, 1, sizeof(uint8_t), header);
+	r = fread(v, 1, sizeof(uint32_t), header2);
 	V ^= 0x80;
 	if(u != V && i < MAX_BUF){
 		b[i].u = u; b[i].v = V; b[i].b = t; i++;

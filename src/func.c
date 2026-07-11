@@ -4,7 +4,7 @@
 uint32_t get_length(FILE* f){
 	uint32_t length;
 	fseek(f, 4, SEEK_SET);
-	fread(&length, sizeof(uint32_t), 1, f);
+	uint64_t r = fread(&length, sizeof(uint32_t), 1, f);
 	return length - 36 >> 2;
 }
 
@@ -33,16 +33,9 @@ void get_stats(FILE* f, ByteData* b, uint32_t i, uint32_t res){
 /*check if config file has correct formatting*/
 uint32_t check_newline_count(FILE* config, char *str){
 	uint32_t nl_count = 0;
-	char allowed_c[] = {'\n', '0', '1', '2', '3', '4',
-                            '5', '6', '7', '8', '9'};
-
 	for(uint32_t i = 0; i < ftell(config); i++){
 		if(str[i] == '\n') nl_count++;
-		bool f = false;
-		for(uint32_t j = 0; j < sizeof(allowed_c); j++){
-			if(str[i] == allowed_c[j]) f = true;
-		}
-		if(!f) return 1;
+		if(!(isdigit(str[i]) || str[i] == '\n')) return 1;
 	}
 	return nl_count;
 }
@@ -51,7 +44,8 @@ uint32_t check_newline_count(FILE* config, char *str){
 bool get_config_str(FILE* config, uint32_t* sr, uint32_t* len){
 	char str[CONFIG_BUF];
 	fseek(config, 0, SEEK_SET);
-	while(!feof(config)) fread(str, 1, CONFIG_BUF, config);
+	uint64_t r;
+	while(!feof(config)) r = fread(str, 1, CONFIG_BUF, config);
 
 	if(check_newline_count(config, str) != NUM_NEWLINES){
 		perror("Wrong config format!");
@@ -69,7 +63,8 @@ bool get_config_str(FILE* config, uint32_t* sr, uint32_t* len){
 bool get_config_str_(FILE* config, char* f_str, uint32_t* res){
 	char str[CONFIG_BUF];
 	fseek(config, 0, SEEK_SET);
-	while(!feof(config)) fread(str, 1, CONFIG_BUF, config);
+	uint64_t r;
+	while(!feof(config)) r = fread(str, 1, CONFIG_BUF, config);
 
 	if(check_newline_count(config, str) != NUM_NEWLINES){
 		perror("Wrong config format!");
