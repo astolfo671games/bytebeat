@@ -1,11 +1,8 @@
 #include "func.h"
 
 /*get audio length (in samples)*/
-uint32_t get_length(FILE* f){
-	uint32_t length;
-	fseek(f, 4, SEEK_SET);
-	uint64_t r = fread(&length, sizeof(uint32_t), 1, f);
-	return length - 36 >> 2;
+void get_data(FILE* temp, uint32_t* data){
+	uint64_t r = fread(data, sizeof(uint32_t), 3, temp);
 }
 
 /*get stats about diffs between the C and JS outputs*/
@@ -40,8 +37,49 @@ uint32_t check_newline_count(FILE* config, char *str){
 	return nl_count;
 }
 
+/*read audio filename*/
+char* get_fname_str(){
+	DIR *dir;
+	struct dirent *entry;
+	regex_t regex;
+	char* fname_buf = NULL;
+
+	regcomp(&regex, FILENAME_MATCHSTR, REG_EXTENDED);
+	dir = opendir("..");
+
+	while((entry = readdir(dir)) != NULL){
+		if(!regexec(&regex, entry -> d_name, 0, NULL, 0)){
+			fname_buf = (char*)calloc(FN_MAXLEN, sizeof(char));
+			memcpy(fname_buf, entry -> d_name, FN_MAXLEN);
+		}
+	}
+
+	closedir(dir);
+	regfree(&regex);
+	return fname_buf;
+}
+
+/*get song metadata*/
+bool get_song_info(SongInfo *song_info){
+	char* fname_buf = get_fname_str();
+	if(fname_buf == NULL) return false;
+	FILE* temp = fopen("temp", "w+b");
+
+	strtok(fname_buf, "_");
+	song_info -> start = atol(strtok(NULL, "f"));
+	song_info -> end = atol(strtok(NULL, "f_"));
+	song_info -> len = song_info -> end - song_info -> start;
+
+	uint32_t temp_data[3] = {song_info -> start, song_info -> end,
+	song_info -> len};
+	fwrite(temp_data, sizeof(uint32_t), 3, temp);
+
+	free(fname_buf);
+	return true;
+}
+
 /*read config file*/
-bool get_config_str(FILE* config, uint32_t* sr, uint32_t* len){
+bool get_config_str(FILE* config, SongInfo *song_info){
 	char str[CONFIG_BUF];
 	fseek(config, 0, SEEK_SET);
 	uint64_t r;
@@ -49,30 +87,36 @@ bool get_config_str(FILE* config, uint32_t* sr, uint32_t* len){
 
 	if(check_newline_count(config, str) != NUM_NEWLINES){
 		perror("Wrong config format!");
+		free(song_info);
 		return false;
 	}
 
 	long s = atol(strtok(str, "\n"));
-	sr[0] = s;
-	sr[1] = s;
-	*len = atol(strtok(NULL, "\n"));
+	song_info -> srate[0] = s; song_info -> srate[1] = s;
+	if(!get_song_info(song_info)){free(song_info); return false;}
 	return true;
 }
 
 /*read config file 2 electric boogaloo*/
-bool get_config_str_(FILE* config, char* f_str, uint32_t* res){
+bool get_config_str_(FILE* config, char* f_str, uint32_t* res, FILE* temp,
+                     uint32_t* data){
 	char str[CONFIG_BUF];
 	fseek(config, 0, SEEK_SET);
-	uint64_t r;
+	uint64_t r, s;
 	while(!feof(config)) r = fread(str, 1, CONFIG_BUF, config);
 
 	if(check_newline_count(config, str) != NUM_NEWLINES){
+		fclose(temp);
+		s = system("rm temp");
 		perror("Wrong config format!");
 		return false;
 	}
 
-	strtok(str, "\n");
-	snprintf(f_str, FN_MAXLEN, FORMAT_STR_FILENAME, atol(strtok(NULL, "\n")));
+	strtok(str, "\n");strtok(NULL, "\n");
+	snprintf(f_str, FN_MAXLEN, FORMAT_STR_FILENAME, data[START], data[END]);
 	*res = atol(strtok(NULL, "\n"));
+
+	fclose(temp);
+	s = system("rm temp");
 	return true;
 }
